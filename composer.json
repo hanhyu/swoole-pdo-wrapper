@@ -1,0 +1,44 @@
+{
+    "name": "kuaiapp/db",
+    "description": "Swoole\\Coroutine\\MySQL's PDO-interface",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "php",
+        "swoole",
+        "pdo",
+        "db"
+    ],
+    "authors": [
+        {
+            "name": "xiaohui.lam",
+            "email": "xiaohui.lam@icloud.com"
+        }
+    ],
+    "require": {
+        "php": "~7.0",
+        "ext-swoole": "~2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kuaiapp\\Db\\": "src/"
+        },
+        "files": [
+            "src/Helper/Functions.php"
+        ]
+    },
+    "require-dev": {
+        "eaglewu/swoole-ide-helper": "dev-master",
+        "phpunit/phpunit": "^5.7",
+        "friendsofphp/php-cs-fixer": "^2.10"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "KuaiappTest\\Db\\": "test"
+        }
+    },
+    "scripts": {
+        "test": "./vendor/bin/phpunit -c phpunit.xml",
+        "psr2": "./vendor/bin/php-cs-fixer fix $1"
+    }
+}
