@@ -1,7 +1,7 @@
 <?php
 namespace Kuaiapp\Db\Pdo;
 
-use Swoole\Coroutine\MySQL;
+use Swoole\Coroutine as co;
 
 /**
  * Represents a connection between PHP and a database server.
@@ -713,7 +713,7 @@ class PDO
         parse_str($dsn, $conf);
         if (!$conf['port']) $conf['port'] = 3306;
 
-        $this->connection = new \Swoole\Coroutine\MySQL();
+        $this->connection = new co\MySQL();
         $this->connection->connect(
             [
                 'host'     => $conf['host'],
@@ -754,7 +754,14 @@ class PDO
      */
     public function prepare($statement, array $driver_options = array())
     {
+        $stmt = $this->connection->prepare($statement);
+        if ($stmt == false) {
+            throw new \Kuaiapp\Db\Pdo\PDOException($this->connection->errno, $this->connection->error);
+        }
+
+        return \Kuaiapp\Db\Pdo\PDOStatement::capture($stmt, $statement);
     }
+
     /**
      * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
      * Initiates a transaction

@@ -1,6 +1,9 @@
 <?php
 namespace Kuaiapp\Db\Pdo;
 
+use Swoole\Coroutine as co;
+;
+
 /**
  * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 1.0.0)<br/>
  * Represents a prepared statement and, after the statement is executed, an
@@ -10,9 +13,36 @@ namespace Kuaiapp\Db\Pdo;
 class PDOStatement implements Traversable
 {
     /**
+     * 查询字串
+     * 
      * @var string
      */
     public $queryString;
+
+    /**
+     * Stmt对象
+     *
+     * @var co\MySQL\Statement
+     */
+    public $statement = null;
+
+    /**
+     * 从Swoole\Coroutine\MySQL\Statement生成伪PDOStatement对象
+     *
+     * @param co\MySQL\Statement $statement   对象
+     * @param string             $queryString SQL查询
+     * 
+     * @return self
+     */
+    public static function capture(co\MySQL\Statement $statement, string $queryString)
+    {
+        $instance = new self();
+        $instance->statement    = $statement;
+        $instance->queryString  = $queryString;
+
+        return $instance;
+    }
+
     /**
      * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
      * Executes a prepared statement
@@ -37,7 +67,10 @@ class PDOStatement implements Traversable
      */
     public function execute($input_parameters = null)
     {
+        $result = $this->statement->execute($input_parameters);
+        return $result;
     }
+
     /**
      * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
      * Fetches the next row from a result set
