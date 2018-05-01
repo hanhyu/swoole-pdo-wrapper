@@ -1079,6 +1079,7 @@ class PDO
     public function query($statement, $mode = PDO::ATTR_DEFAULT_FETCH_MODE, $arg3 = null, array $ctorargs = array())
     {
     }
+
     /**
      * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
      * Returns the ID of the last inserted row or sequence value

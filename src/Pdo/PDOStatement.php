@@ -2,6 +2,7 @@
 namespace Kuaiapp\Db\Pdo;
 
 use Swoole\Coroutine as co;
+use Iterator;
 
 /**
  * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 1.0.0)<br/>
@@ -9,7 +10,7 @@ use Swoole\Coroutine as co;
  * associated result set.
  * @link http://php.net/manual/en/class.pdostatement.php
  */
-class PDOStatement
+class PDOStatement implements Iterator
 {
     /**
      * PDO对象
@@ -476,6 +477,58 @@ class PDOStatement
     public function debugDumpParams()
     {
     }
+
+    /**
+     * Iterator::current
+     *
+     * @return array|object|null
+     */
+    public function current()
+    {
+
+    }
+
+    /**
+     * Iterator::key
+     *
+     * @return mixed
+     */
+    public function key()
+    {
+
+    }
+
+    /**
+     * Iterator::next
+     *
+     * @return void
+     */
+    public function next()
+    {
+
+    }
+
+    /**
+     * Iterator::rewind
+     *
+     * @return void
+     */
+    public function rewind()
+    {
+
+    }
+
+    /**
+     * Iterator::valid
+     *
+     * @return bool
+     */
+    public function valid()
+    {
+
+    }
+
+
     final public function __wakeup()
     {
     }
