@@ -2,7 +2,6 @@
 namespace Kuaiapp\Db\Pdo;
 
 use Swoole\Coroutine as co;
-;
 
 /**
  * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 1.0.0)<br/>
@@ -10,7 +9,7 @@ use Swoole\Coroutine as co;
  * associated result set.
  * @link http://php.net/manual/en/class.pdostatement.php
  */
-class PDOStatement implements Traversable
+class PDOStatement
 {
     /**
      * 查询字串
@@ -67,8 +66,10 @@ class PDOStatement implements Traversable
      */
     public function execute($input_parameters = null)
     {
+        if (!$input_parameters) $input_parameters = [];
+
         $result = $this->statement->execute($input_parameters);
-        return $result;
+        return true;
     }
 
     /**

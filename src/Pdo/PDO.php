@@ -707,11 +707,11 @@ class PDO
      * @param string $passwd [optional]
      * @param array $options [optional]
      */
-    public function __construct($dsn, $username, $passwd, $options)
+    public function __construct($dsn, $username = null, $passwd = null, $options = [])
     {
         $dsn = str_replace(';', '&', array_reverse(explode(':', $dsn))[0]);
         parse_str($dsn, $conf);
-        if (!$conf['port']) $conf['port'] = 3306;
+        if (!isset($conf['port']) || !$conf['port']) $conf['port'] = 3306;
 
         $this->connection = new co\MySQL();
         $this->connection->connect(
@@ -741,7 +741,7 @@ class PDO
      * Some drivers have driver specific options that may be set at
      * prepare-time.
      * </p>
-     * @return PDOStatement|bool If the database server successfully prepares the statement,
+     * @return \Kuaiapp\Db\Pdo\PDOStatement|bool If the database server successfully prepares the statement,
      * <b>PDO::prepare</b> returns a
      * <b>PDOStatement</b> object.
      * If the database server cannot successfully prepare the statement,
@@ -756,7 +756,7 @@ class PDO
     {
         $stmt = $this->connection->prepare($statement);
         if ($stmt == false) {
-            throw new \Kuaiapp\Db\Pdo\PDOException($this->connection->errno, $this->connection->error);
+            throw new \Kuaiapp\Db\Pdo\PDOException($this->connection->error, $this->connection->errno);
         }
 
         return \Kuaiapp\Db\Pdo\PDOStatement::capture($stmt, $statement);
