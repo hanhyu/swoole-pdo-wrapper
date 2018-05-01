@@ -4,8 +4,12 @@ Swoole\Coroutine\MySQL 的 PDO接口实现, 还未完成
 
 ## Inspire
 
-世界上有太多太多的框架，每款框架都有自己特定的DB/ORM查询器. 而且他们绝大部分都不兼容。 如果这些框架我们都要为他们单独集成一次 Swoole\Coroutine\MySQL 将是一个巨大的工作量。
- * 所以我打算在 `Swoole\Coroutine\MySQL` 基础上实现 `PDO` 的接口, 其他框架的DB/ORM查询器都是兼容 `PDO` 的，所以我们只需极少改动即可将自己业务的框架的数据库层移植到Swoole的MYSQL协程客户端.
+世界上有太多太多的框架，每款框架都有自己特定的DB/ORM查询器. 而且他们绝大部分都不兼容。  
+如果这些框架我们都要为他们单独集成一次 Swoole\Coroutine\MySQL 将是一个巨大的工作量。  
+
+- 于是我就产生了再 `Swoole\Coroutine\MySQL` 基础上实现 `PDO` 的接口的想法.  
+  其他框架的DB/ORM查询器都是兼容 `PDO` 的  
+  只要此项目完成 其他框架的DB查询全部可以分分钟移植到 `Swoole` 的异步MYSQL客户端中
 
 ## Progress
 
@@ -61,7 +65,11 @@ composer require kuaiapp/db
 
 ## Known Issue
 
-- You can only use `Kuaiapp\Db\Pdo\PDO*` classes in SWOOLE `request` `receive` ... event because of swoole's limits.
+- You can only use `Kuaiapp\Db\Pdo\PDO*` classes in SWOOLE `request` `receive` ... event or [`Coroutine`](https://github.com/swoole/swoole-src#coroutine) because of [swoole's limits](https://github.com/swoole/swoole-src/blob/37d1067687cff0b67fed978f9397ff72d76f6612/swoole_coroutine.c#L204).
+
+## Credit
+
+- [Swoole](https://github.com/swoole/swoole-src)
 
 ## LICENSE
 
