@@ -21,10 +21,12 @@ $http->on(
     REQUEST,
     function ($request, $response) {
         $db = new PDO('mysql:host=127.0.0.1;dbname=crazygame', 'root', '');
+        $db->beginTransaction();
         $stmt = $db->prepare('SELECT * FROM ask_users WHERE id!=?');
         $stmt->execute([1]);
         $result = $stmt->fetchAll();
         $response->end(json_encode($result));
+        $db->commit();
     }
 );
 $http->start();

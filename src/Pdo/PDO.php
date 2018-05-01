@@ -880,6 +880,13 @@ class PDO
     const SQLSRV_ATTR_DIRECT_QUERY = 1002;
 
     /**
+     * 是否在事务内
+     *
+     * @var boolean
+     */
+    protected $in_transaction = false;
+
+    /**
      * 协程MySQL客户端
      *
      * @var \Swoole\Coroutine\MySQL
@@ -960,6 +967,8 @@ class PDO
      */
     public function beginTransaction()
     {
+        $this->exec('BEGIN');
+        $this->in_transaction = true;
     }
     /**
      * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
@@ -969,24 +978,33 @@ class PDO
      */
     public function commit()
     {
+        $this->exec('COMMIT');
+        $this->in_transaction = false;
+
     }
     /**
      * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
      * Rolls back a transaction
-     * @link http://php.net/manual/en/pdo.rollback.php
+     * 
+     * @link   http://php.net/manual/en/pdo.rollback.php
      * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
      */
     public function rollBack()
     {
+        $this->exec('ROLLBACK');
+        $this->in_transaction = false;
+
     }
     /**
      * (PHP 5 &gt;= 5.3.3, Bundled pdo_pgsql, PHP 7)<br/>
      * Checks if inside a transaction
-     * @link http://php.net/manual/en/pdo.intransaction.php
+     * 
+     * @link   http://php.net/manual/en/pdo.intransaction.php
      * @return bool <b>TRUE</b> if a transaction is currently active, and <b>FALSE</b> if not.
      */
     public function inTransaction()
     {
+        return !!$this->in_transaction;
     }
     /**
      * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
@@ -1029,7 +1047,10 @@ class PDO
      */
     public function exec($statement)
     {
+        $this->connection->query($statement);
+        return $this->connection->affected_rows;
     }
+
     /**
      * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.2.0)<br/>
      * Executes an SQL statement, returning a result set as a PDOStatement object
@@ -1082,6 +1103,7 @@ class PDO
      */
     public function lastInsertId($name = null)
     {
+        return $this->connection->insert_id;
     }
     /**
      * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
@@ -1111,6 +1133,7 @@ class PDO
      */
     public function errorCode()
     {
+        return $this->connection->errno;
     }
     /**
      * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.1.0)<br/>
@@ -1153,6 +1176,7 @@ class PDO
      */
     public function errorInfo()
     {
+        return $this->connection->error;
     }
     /**
      * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.2.0)<br/>
