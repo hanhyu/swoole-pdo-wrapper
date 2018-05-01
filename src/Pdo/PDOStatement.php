@@ -26,6 +26,13 @@ class PDOStatement
     public $statement = null;
 
     /**
+     * 查询结果
+     *
+     * @var array
+     */
+    protected $result = null;
+
+    /**
      * 从Swoole\Coroutine\MySQL\Statement生成伪PDOStatement对象
      *
      * @param co\MySQL\Statement $statement   对象
@@ -68,7 +75,7 @@ class PDOStatement
     {
         if (!$input_parameters) $input_parameters = [];
 
-        $result = $this->statement->execute($input_parameters);
+        $this->result = $this->statement->execute($input_parameters);
         return true;
     }
 
@@ -264,6 +271,7 @@ class PDOStatement
      */
     public function fetchAll($fetch_style = null, $fetch_argument = null, array $ctor_args = array())
     {
+        return $this->result;
     }
     /**
      * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.2.4)<br/>
