@@ -929,16 +929,17 @@ class PDO
      * @param string $statement      查询预计SQL, 暂不支持:id类占位符, 只支持?占位符
      * @param array  $driver_options 选传 该数组包含一个或多个 key=>value 对，以便为此方法返回的 PDOStatement 对象设置属性值. 您最常用的方法是将PDO::ATTR_CURSOR值设置为PDO::CURSOR_SCROLL以请求可滚动的游标. 某些驱动程序具有可能在准备时设置的驱动程序特定选项.
      * 
-     * @return \Kuaiapp\Db\Pdo\PDOStatement|bool 如果数据库服务器成功准备了该语句PDO::prepare 返回 a PDOStatement 对象. 如果数据库服务器无法成功准备语句，PDO::prepare 返回 FALSE 或 emits PDOException (取决于错误处理), 仿真准备语句不与数据库服务器通信，因此 PDO::prepare 不检查语句
+     * @return PDOStatement|bool 如果数据库服务器成功准备了该语句PDO::prepare 返回 a PDOStatement 对象. 如果数据库服务器无法成功准备语句，PDO::prepare 返回 FALSE 或 emits PDOException (取决于错误处理), 仿真准备语句不与数据库服务器通信，因此 PDO::prepare 不检查语句
      */
     public function prepare($statement, array $driver_options = array())
     {
+        // TODO 将:placeholder替换成?占位
         $stmt = $this->connection->prepare($statement);
         if ($stmt == false) {
-            throw new \Kuaiapp\Db\Pdo\PDOException($this->connection->error, $this->connection->errno);
+            throw new PDOException($this->connection->error, $this->connection->errno);
         }
 
-        return \Kuaiapp\Db\Pdo\PDOStatement::capture($stmt, $statement);
+        return PDOStatement::capture($stmt, $statement, $this);
     }
 
     /**

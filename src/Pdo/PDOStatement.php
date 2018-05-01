@@ -12,6 +12,13 @@ use Swoole\Coroutine as co;
 class PDOStatement
 {
     /**
+     * PDO对象
+     *
+     * @var PDO
+     */
+    protected $pdo = null;
+
+    /**
      * 查询字串
      * 
      * @var string
@@ -37,14 +44,16 @@ class PDOStatement
      *
      * @param co\MySQL\Statement $statement   对象
      * @param string             $queryString SQL查询
+     * @param PDO                $pdo         PDO对象
      * 
      * @return self
      */
-    public static function capture(co\MySQL\Statement $statement, string $queryString)
+    public static function capture(co\MySQL\Statement $statement, string $queryString, PDO $pdo)
     {
         $instance = new self();
         $instance->statement    = $statement;
         $instance->queryString  = $queryString;
+        $instance->pdo          = $pdo;
 
         return $instance;
     }
@@ -199,6 +208,7 @@ class PDOStatement
      */
     public function rowCount()
     {
+        return $this->pdo->affected_rows;
     }
     /**
      * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 0.9.0)<br/>

@@ -59,6 +59,9 @@ composer require kuaiapp/db
 
 - Swoole > 2.1.2, enable coroutine, enable mysqld
 
+## Known Issue
+
+- You can only use `Kuaiapp\Db\Pdo\PDO*` classes in SWOOLE `request` `receive` ... event because of swoole's limits.
 
 ## LICENSE
 
