@@ -3,6 +3,7 @@ namespace Kuaiapp\Db\Pdo;
 
 use Swoole\Coroutine as co;
 use Iterator;
+use PDOStatement as NativePDOStatement;
 
 /**
  * (PHP 5 &gt;= 5.1.0, PHP 7, PECL pdo &gt;= 1.0.0)<br/>
@@ -10,7 +11,7 @@ use Iterator;
  * associated result set.
  * @link http://php.net/manual/en/class.pdostatement.php
  */
-class PDOStatement implements Iterator
+class PDOStatement extends NativePDOStatement
 {
     /**
      * PDO对象
@@ -53,7 +54,7 @@ class PDOStatement implements Iterator
     {
         $instance = new self();
         $instance->statement    = $statement;
-        $instance->queryString  = $queryString;
+        //$instance->queryString  = $queryString;
         $instance->pdo          = $pdo;
 
         return $instance;
@@ -280,7 +281,7 @@ class PDOStatement implements Iterator
      * ORDER BY clauses in SQL to restrict results before retrieving and
      * processing them with PHP.
      */
-    public function fetchAll($fetch_style = null, $fetch_argument = null, array $ctor_args = array())
+    public function fetchAll($how = null, $class_name = null, $ctor_args= null)
     {
         return $this->result;
     }
@@ -297,7 +298,7 @@ class PDOStatement implements Iterator
      * @return mixed an instance of the required class with property names that
      * correspond to the column names or <b>FALSE</b> on failure.
      */
-    public function fetchObject($class_name = "stdClass", array $ctor_args = array())
+    public function fetchObject($class_name = null, $ctor_args = null)
     {
     }
     /**
@@ -447,7 +448,7 @@ class PDOStatement implements Iterator
      * @param array $ctorarfg [optional] <p> Constructor arguments. </p>
      * @return bool 1 on success or <b>FALSE</b> on failure.
      */
-    public function setFetchMode($mode, $classNameObject, array $ctorarfg)
+    public function setFetchMode($mode, $params = null)
     {
     }
     /**
@@ -526,13 +527,5 @@ class PDOStatement implements Iterator
     public function valid()
     {
 
-    }
-
-
-    final public function __wakeup()
-    {
-    }
-    final public function __sleep()
-    {
     }
 }
