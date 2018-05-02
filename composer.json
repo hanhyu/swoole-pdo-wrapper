@@ -22,10 +22,7 @@
     "autoload": {
         "psr-4": {
             "Kuaiapp\\Db\\": "src/"
-        },
-        "files": [
-            "src/Helper/Functions.php"
-        ]
+        }
     },
     "require-dev": {
         "eaglewu/swoole-ide-helper": "dev-master",
